@@ -8,11 +8,21 @@ public class WordCoordinate {
     private float height;
     private float width;
 
+    private int page;
+
     public WordCoordinate(float x, float y, float height, float width) {
         this.x = x;
         this.y = y;
         this.height = height;
         this.width = width;
+    }
+
+    public WordCoordinate(float x, float y, float height, float width, int page) {
+        this.x = x;
+        this.y = y;
+        this.height = height;
+        this.width = width;
+        this.page = page;
     }
 
     public float getX() {
@@ -47,6 +57,14 @@ public class WordCoordinate {
         this.width = width;
     }
 
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
     @Override
     public String toString() {
         return "WordCoordinate{" +
@@ -54,6 +72,7 @@ public class WordCoordinate {
                 ", y=" + y +
                 ", height=" + height +
                 ", width=" + width +
+                ", page=" + page +
                 '}';
     }
 }

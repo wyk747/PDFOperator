@@ -47,6 +47,14 @@ public class PDFWriter {
 
     }
 
+    public void insertText(PDDocument document, String text, PDFont font, int fontSize, WordCoordinate coordinate, float offsetX, float offsetY) throws IOException {
+
+        PDPage pdPage = document.getPage(coordinate.getPage());
+
+        this.insertText(document, pdPage, text, font, fontSize, coordinate, offsetX, offsetY);
+
+    }
+
     /**
      * PDF文档插入图片
      *
@@ -78,6 +86,14 @@ public class PDFWriter {
 
     public void insertImage(PDDocument document, PDPage page, InputStream inputStream, int width, int height, WordCoordinate coordinate) throws IOException {
         this.insertImage(document, page, inputStream, width, height, coordinate, 0, 0);
+    }
+
+    public void insertImage(PDDocument document, InputStream inputStream, int width, int height, WordCoordinate coordinate, float offsetX, float offsetY) throws IOException {
+
+        PDPage page = document.getPage(coordinate.getPage());
+
+        this.insertImage(document, page, inputStream, width, height, coordinate, offsetX, offsetY);
+
     }
 
     private byte[] inputStreamToByteArray(InputStream inputStream) throws IOException {
