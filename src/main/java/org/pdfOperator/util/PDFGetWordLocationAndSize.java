@@ -1,8 +1,11 @@
 package org.pdfOperator.util;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.TextPosition;
+import org.apache.pdfbox.util.Matrix;
+import org.apache.pdfbox.util.Vector;
 import org.pdfOperator.bean.WordCoordinate;
 
 import java.io.*;
@@ -60,15 +63,15 @@ public class PDFGetWordLocationAndSize extends PDFTextStripper {
             String unicode = position.getUnicode();
             float x = position.getXDirAdj();
             float y = position.getYDirAdj();
-            float height = position.getHeightDir();
-            float width = position.getWidthDirAdj();
+            float height = position.getYScale();
+            float width = position.getWidthOfSpace();
 
             if (unicode.equals(String.valueOf(keyWordArray[wordPosition]))) {
                 wordPosition++;
                 if (wordPosition == arrayLength) {
                     this.canFind = true;
                     coordinates.add(new WordCoordinate(x, y, height, width, page));
-                    System.out.println(unicode + " x: " + x + " y:" + y + " height: " + height + " width: " + width);
+                    System.out.println(unicode + " x: " + x + " y:" + y + " height: " + height + " width: " + width + " getYScale:" + position.getYScale());
                     wordPosition = 0;
                 }
             } else {
@@ -82,10 +85,10 @@ public class PDFGetWordLocationAndSize extends PDFTextStripper {
         try {
 
             PDDocument document = PDDocument.load(new File("D:\\入网协议.pdf"));
-            PDFGetWordLocationAndSize stripper = new PDFGetWordLocationAndSize("${pic}");
+            PDFGetWordLocationAndSize stripper = new PDFGetWordLocationAndSize("${transferName}");
             stripper.setSortByPosition(true);
             stripper.setStartPage(1);
-            stripper.setEndPage(1);
+            stripper.setEndPage(2);
 
             Writer writer = new OutputStreamWriter(new ByteArrayOutputStream());
             stripper.writeText(document, writer);

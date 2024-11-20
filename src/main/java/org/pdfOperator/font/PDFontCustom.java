@@ -10,8 +10,6 @@ import java.net.URL;
 
 public class PDFontCustom {
 
-    public static final String PINGFANG = "pf.ttf";
-
     public static final String MISANS_BOLD = "MiSans-Bold.ttf";
 
     public static final String MISANS_DEMIBOLD = "MiSans-Demibold.ttf";
@@ -34,7 +32,7 @@ public class PDFontCustom {
 
     public static PDFont getFont(PDDocument pdDocument, String font) throws IOException {
         ClassLoader loader = PDFontCustom.class.getClassLoader();
-        URL resource = loader.getResource(PINGFANG);
+        URL resource = loader.getResource(font);
         InputStream inputStream = resource.openStream();
         return PDType0Font.load(pdDocument, inputStream);
     }

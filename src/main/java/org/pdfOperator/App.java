@@ -8,7 +8,6 @@ import org.pdfOperator.util.CoordinateFetcher;
 import org.pdfOperator.writer.PDFWriter;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,27 +25,42 @@ public class App {
 
             PDFWriter writer = new PDFWriter();
 
-            PDFont font = PDFontCustom.getFont(document, PDFontCustom.MISANS_BOLD);
+            PDFont font = PDFontCustom.getFont(document, PDFontCustom.MISANS_NORMAL);
 
             CoordinateFetcher fetcher = new CoordinateFetcher();
             List<WordCoordinate> wordCoordinates = fetcher.fetchCoordinate(document, "${transferName}");
 
+
             for (WordCoordinate coordinate : wordCoordinates) {
-                writer.insertText(document, "张一凡", font, 15, coordinate, -coordinate.getWidth() * "${transferName}".length(), 0);
+
+                writer.fillColor(document,document.getPage(coordinate.getPage()), coordinate, -coordinate.getWidth() * ("${transferName}".length() - 1), 3, coordinate.getWidth() * "${transferName}".length(), coordinate.getHeight());
+
+            }
+
+            List<WordCoordinate> wordCoordinates1 = fetcher.fetchCoordinate(document, "${transferName}");
+
+
+            for (WordCoordinate coordinate : wordCoordinates1) {
+
+                writer.insertText(document, "张一凡", font, 15, coordinate, -coordinate.getWidth() * ("${transferName}".length() - 1), 0);
             }
 
             CoordinateFetcher acceptNameFetcher = new CoordinateFetcher();
             List<WordCoordinate> acceptNameWordCoordinates = acceptNameFetcher.fetchCoordinate(document, "${acceptName}");
 
             for (WordCoordinate coordinate : acceptNameWordCoordinates) {
-                writer.insertText(document, "张二凡", font, 15, coordinate, -coordinate.getWidth() * "${acceptName}".length(), 0);
+                writer.fillColor(document,document.getPage(coordinate.getPage()), coordinate, -coordinate.getWidth() * ("${acceptName}".length() - 1), 3, coordinate.getWidth() * "${acceptName}".length(), coordinate.getHeight());
+                writer.insertText(document, "张二凡", font, 15, coordinate, -coordinate.getWidth() * ("${acceptName}".length() - 1), 0);
             }
 
             CoordinateFetcher transferNumFetcher = new CoordinateFetcher();
             List<WordCoordinate> transferNumWordCoordinates = transferNumFetcher.fetchCoordinate(document, "${transferNum}");
 
             for (WordCoordinate coordinate : transferNumWordCoordinates) {
-                writer.insertText(document, "13500000000", font, 15, coordinate, -coordinate.getWidth() * "${transferNum}".length(), 0);
+
+                writer.fillColor(document,document.getPage(coordinate.getPage()), coordinate, -coordinate.getWidth() * ("${transferNum}".length() - 1), 3, coordinate.getWidth() * "${transferNum}".length(), coordinate.getHeight());
+
+                writer.insertText(document, "13500000000", font, 15, coordinate, -coordinate.getWidth() * ("${transferNum}".length() - 1), 0);
             }
 
             CoordinateFetcher dateFetcher = new CoordinateFetcher();
@@ -57,19 +71,22 @@ public class App {
             String dateStr = format.format(date);
 
             for (WordCoordinate coordinate : dateWordCoordinates) {
-                writer.insertText(document, dateStr, font, 15, coordinate, -coordinate.getWidth() * "${date}".length(), 0);
+
+                writer.fillColor(document,document.getPage(coordinate.getPage()), coordinate, -coordinate.getWidth() * ("${date}".length() - 1), 3, coordinate.getWidth() * "${date}".length(), coordinate.getHeight());
+
+                writer.insertText(document, dateStr, font, 15, coordinate, -coordinate.getWidth() * ("${date}".length() - 1), 0);
             }
 
 
-            List<WordCoordinate> imgCoordinates = fetcher.fetchCoordinate(document, "${pic}");
-
-            File file = new File("D:\\touxiang.jpg");
-            FileInputStream inputStream = new FileInputStream(file);
-
-            for (WordCoordinate coordinate : imgCoordinates) {
-                System.out.println(coordinate);
-                writer.insertImage(document, inputStream, 100, 150, coordinate, -coordinate.getWidth() * "${pic}".length(), 0);
-            }
+//            List<WordCoordinate> imgCoordinates = fetcher.fetchCoordinate(document, "${pic}");
+//
+//            File file = new File("D:\\touxiang.jpg");
+//            FileInputStream inputStream = new FileInputStream(file);
+//
+//            for (WordCoordinate coordinate : imgCoordinates) {
+//                System.out.println(coordinate);
+//                writer.insertImage(document, inputStream, 100, 150, coordinate, -coordinate.getWidth() * "${pic}".length(), 0);
+//            }
 
 
             document.save("D:\\入网协议1.pdf");

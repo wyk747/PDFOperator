@@ -8,6 +8,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.pdfOperator.bean.WordCoordinate;
 
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,11 +33,34 @@ public class PDFWriter {
 
         PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, false, false);
         contentStream.beginText();
+        contentStream.setNonStrokingColor(Color.BLACK);
         contentStream.setFont(font, fontSize);
         contentStream.newLineAtOffset(coordinate.getX() + offsetX, mediaBox.getUpperRightY() - coordinate.getY() - offsetY);
         contentStream.showText(text);
         contentStream.endText();
 
+        contentStream.close();
+
+    }
+
+    /**
+     * PDF文档指定位置填充颜色
+     * @param document
+     * @param page
+     * @param coordinate
+     * @param offsetX
+     * @param offsetY
+     * @param width
+     * @param height
+     * @throws IOException
+     */
+    public void fillColor(PDDocument document, PDPage page, WordCoordinate coordinate, float offsetX, float offsetY, float width, float height) throws IOException {
+
+        PDRectangle mediaBox = page.getMediaBox();
+        PDPageContentStream contentStream = new PDPageContentStream(document, page, PDPageContentStream.AppendMode.APPEND, false, false);
+        contentStream.setNonStrokingColor(Color.WHITE);
+        contentStream.addRect(coordinate.getX() + offsetX, mediaBox.getUpperRightY() - coordinate.getY() - offsetY, width, height);
+        contentStream.fill();
         contentStream.close();
 
     }
